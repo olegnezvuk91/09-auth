@@ -18,6 +18,16 @@ const Header = () => {
           <li className={css.navigationItem}>
             <TagsMenu />
           </li>
+          <li className={css.navigationItem}>
+            <Link className={css.headerLink} href="/sign-in">
+              Login
+            </Link>
+          </li>
+          <li className={css.navigationItem}>
+            <Link className={css.headerLink} href="/sign-up">
+              Register
+            </Link>
+          </li>
         </ul>
       </nav>
     </header>

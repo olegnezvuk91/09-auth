@@ -1,70 +1,81 @@
-import axios from 'axios';
 import type { CreateNote, Note } from '@/types/note';
-
-const myKey = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
-const baseUrl = 'https://notehub-public.goit.study/api/notes';
+import { nextServer } from './api/api';
+import toast from 'react-hot-toast';
 
 export interface FetchNotesRes {
   notes: Note[];
   totalPages: number;
 }
 
+export interface ParamsTypes {
+  page: number;
+  perPage: number;
+  search?: string;
+  tag?: string;
+}
+
 export async function fetchNotes(
   search: string,
   page: number,
-  tag?: string,
-): Promise<FetchNotesRes> {
-  const response = await axios.get<FetchNotesRes>(`${baseUrl}`, {
-    params: {
-      page: page,
-      perPage: 12,
-      ...(search && { search }),
-      ...(tag ? { tag } : {}),
-    },
-    headers: {
-      Authorization: `Bearer ${myKey}`,
-    },
-  });
+  tag: string,
+): Promise<FetchNotesRes | undefined> {
+  try {
+    const perPage = 12;
+    const params: ParamsTypes = {
+      tag,
+      page,
+      perPage,
+    };
 
-  return response.data;
+    if (search?.trim()) {
+      params.search = search;
+    }
+    if (tag?.trim()) {
+      params.tag = tag;
+    }
+
+    const response = await nextServer.get<FetchNotesRes>('/notes', {
+      params,
+    });
+
+    return response.data;
+  } catch (error) {
+    toast.error('Something went wrong...Try again, please');
+  }
 }
 
-export async function createNote(newNote: CreateNote): Promise<Note> {
-  const response = await axios.post<Note>(`${baseUrl}`, newNote, {
-    headers: {
-      Authorization: `Bearer ${myKey}`,
-    },
-  });
-  return response.data;
+export async function createNote({
+  title,
+  content,
+  tag,
+}: CreateNote): Promise<Note | undefined> {
+  try {
+    const params: CreateNote = {
+      title,
+      content,
+      tag,
+    };
+    const response = await nextServer.post<Note>('/notes', params);
+    return response.data;
+  } catch (error) {
+    toast.error('Something went wrong...Try again, please');
+  }
 }
 
-export async function deleteNote(id: string): Promise<Note> {
-  const response = await axios.delete<Note>(`${baseUrl}/${id}`, {
-    headers: {
-      Authorization: `Bearer ${myKey}`,
-    },
-  });
-  return response.data;
+export async function deleteNote(id: string): Promise<Note | undefined> {
+  try {
+    const response = await nextServer.delete<Note>(`notes/${id}`);
+    return response.data;
+  } catch (error) {
+    toast.error('Something went wrong...Try again, please');
+  }
 }
 
-export async function fetchNoteById(id: string): Promise<Note> {
-  const response = await axios.get<Note>(`${baseUrl}/${id}`, {
-    headers: {
-      Authorization: `Bearer ${myKey}`,
-    },
-  });
-  return response.data;
+export async function fetchNoteById(id: string): Promise<Note | undefined> {
+  try {
+    const response = await nextServer.get<Note>(`notes/${id}`);
+    return response.data;
+  } catch (error) {
+    toast.error('Something went wrong...Try again, please');
+  }
 }
-
-export type Category = {
-  id: string;
-  name: string;
-  description: string;
-  createdAt: string;
-  updatedAt: string;
-};
-
-export const getCategories = async () => {
-  const res = await axios<Category[]>('/categories');
-  return res.data;
-};
