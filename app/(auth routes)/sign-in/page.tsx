@@ -1,11 +1,18 @@
 'use client';
+import { AuthRequest } from '@/types/user';
 import css from './SignInPage.module.css';
+import { login } from '@/lib/api/clientsApi';
 
 export default function SignInPage() {
+  const handleSubmit = async (formData: FormData) => {
+    const data = Object.fromEntries(formData) as unknown as AuthRequest;
+    const res = await login(data);
+    console.log(res);
+  };
   return (
     <>
       <main className={css.mainContent}>
-        <form className={css.form}>
+        <form className={css.form} action={handleSubmit}>
           <h1 className={css.formTitle}>Sign in</h1>
 
           <div className={css.formGroup}>

@@ -6,7 +6,7 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useDebounce } from 'use-debounce';
 
-import { fetchNotes } from '@/lib/api';
+import { fetchNotes } from '@/lib/api/clientsApi';
 import NoteList from '@/components/NoteList/NoteList';
 
 import Pagination from '@/components/Pagination/Pagination';
@@ -29,7 +29,7 @@ export default function NotesClient({ tag }: NotesClientProps) {
 
   const { data, isLoading, isError, isSuccess } = useQuery({
     queryKey: ['notes', debouncedSearch, page, tag],
-    queryFn: () => fetchNotes(debouncedSearch, page, tag),
+    queryFn: () => fetchNotes(debouncedSearch, page, tag ?? ''),
     placeholderData: keepPreviousData,
   });
 
@@ -47,7 +47,7 @@ export default function NotesClient({ tag }: NotesClientProps) {
       <Toaster />
       <header className={css.toolbar}>
         <SearchBox value={search} onSearch={handleSearch} />
-        {isSuccess && data?.totalPages > 1 && (
+        {totalPages > 1 && (
           <Pagination
             totalPages={totalPages}
             onPageChange={handlePageChange}
@@ -61,7 +61,7 @@ export default function NotesClient({ tag }: NotesClientProps) {
       </header>
       {isLoading && <Loader />}
       {isError && <ErrorMessage />}
-      {isSuccess && data.notes.length > 0 && <NoteList notes={data.notes} />}
+      {isSuccess && data && <NoteList notes={data.notes} />}
     </div>
   );
 }

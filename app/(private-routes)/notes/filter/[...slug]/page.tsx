@@ -1,4 +1,4 @@
-import { fetchNotes } from '@/lib/api';
+import { fetchNotes } from '@/lib/api/clientsApi';
 import NotesClient from './Notes.client';
 import { Metadata } from 'next';
 import {
@@ -55,7 +55,7 @@ export default async function NotesPage({ params }: Props) {
   const initialPage = 1;
   const initialSearch = '';
 
-  const tag = slug?.[0] === 'all' ? undefined : slug?.[0];
+  const tag = slug?.[0] === 'all' ? '' : (slug?.[0] ?? '');
 
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery({
