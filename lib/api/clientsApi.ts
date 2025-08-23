@@ -8,11 +8,19 @@ export interface FetchNotesRes {
   totalPages: number;
 }
 
+export interface CheckSessionRes {
+  success: boolean;
+}
+
 export interface ParamsTypes {
   page: number;
   perPage: number;
   search?: string;
   tag?: string;
+}
+
+export interface UpdateMeRequest {
+  username: string;
 }
 
 export async function fetchNotes(
@@ -73,12 +81,8 @@ export async function deleteNote(id: string): Promise<Note | undefined> {
 }
 
 export async function fetchNoteById(id: string): Promise<Note | undefined> {
-  try {
-    const response = await nextServer.get<Note>(`notes/${id}`);
-    return response.data;
-  } catch (error) {
-    toast.error('Something went wrong...Try again, please');
-  }
+  const response = await nextServer.get<Note>(`notes/${id}`);
+  return response.data;
 }
 
 export async function register(data: AuthRequest) {
@@ -89,4 +93,41 @@ export async function register(data: AuthRequest) {
 export async function login(data: AuthRequest) {
   const response = await nextServer.post<User>('/auth/login', data);
   return response.data;
+}
+
+export async function logout() {
+  try {
+    const response = await nextServer.post('/auth/logout');
+    return response.data;
+  } catch {
+    toast.error('Something went wrong...Try again, please');
+  }
+}
+
+export async function session() {
+  try {
+    const response = await nextServer.get<CheckSessionRes>('/auth/session');
+    return response.data.success;
+  } catch {
+    toast.error('Something went wrong...Try again, please');
+  }
+}
+
+export async function getMe() {
+  try {
+    const response = await nextServer.get<LogInUser>('/users/me');
+    return response.data;
+  } catch {
+    toast.error('Something went wrong...Try again, please');
+  }
+}
+
+export async function updateMe({ username }: UpdateMeRequest) {
+  try {
+    const res = await nextServer.patch<LogInUser>('/users/me', { username });
+    return res.data;
+  } catch (error) {
+    toast.error(error instanceof Error ? error.message : String(error));
+    throw error;
+  }
 }

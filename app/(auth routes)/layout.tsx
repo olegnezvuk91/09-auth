@@ -4,11 +4,11 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Loader from '../loading';
 
-interface PublicLayoutProps {
+interface Props {
   children: React.ReactNode;
 }
 
-export default function PublicLayout({ children }: PublicLayoutProps) {
+export default function PublicLayout({ children }: Props) {
   const [loading, setLoading] = useState(true);
 
   const router = useRouter();

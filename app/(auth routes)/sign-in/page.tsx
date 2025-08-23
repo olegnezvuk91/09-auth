@@ -2,12 +2,28 @@
 import { AuthRequest } from '@/types/user';
 import css from './SignInPage.module.css';
 import { login } from '@/lib/api/clientsApi';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuthStore } from '@/lib/store/authStore';
 
 export default function SignInPage() {
+  const router = useRouter();
+  const [error, setError] = useState('');
+  const setUser = useAuthStore((state) => state.setUser);
+
   const handleSubmit = async (formData: FormData) => {
-    const data = Object.fromEntries(formData) as unknown as AuthRequest;
-    const res = await login(data);
-    console.log(res);
+    try {
+      const data = Object.fromEntries(formData) as unknown as AuthRequest;
+      const res = await login(data);
+      if (res) {
+        setUser(res);
+        router.push('/profile');
+      } else {
+        setError('Invalid email or password');
+      }
+    } catch (error) {
+      setError('Oops... some error');
+    }
   };
   return (
     <>
@@ -42,6 +58,7 @@ export default function SignInPage() {
               Log in
             </button>
           </div>
+          {error && <p className={css.error}>{error}</p>}
         </form>
       </main>
     </>

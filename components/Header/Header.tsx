@@ -1,3 +1,4 @@
+import AuthNavigation from '../AuthNavigation/AuthNavigation';
 import TagsMenu from '../TagsMenu/TagsMenu';
 import css from './Header.module.css';
 import Link from 'next/link';
@@ -18,16 +19,8 @@ const Header = () => {
           <li className={css.navigationItem}>
             <TagsMenu />
           </li>
-          <li className={css.navigationItem}>
-            <Link className={css.headerLink} href="/sign-in">
-              Login
-            </Link>
-          </li>
-          <li className={css.navigationItem}>
-            <Link className={css.headerLink} href="/sign-up">
-              Register
-            </Link>
-          </li>
+
+          <AuthNavigation />
         </ul>
       </nav>
     </header>
