@@ -13,17 +13,13 @@ export default function SignInPage() {
   const setUser = useAuthStore((state) => state.setUser);
 
   const handleSubmit = async (formData: FormData) => {
-    try {
-      const data = Object.fromEntries(formData) as unknown as AuthRequest;
-      const res = await login(data);
-      if (res) {
-        setUser(res);
-        router.push('/profile');
-      } else {
-        setError('Invalid email or password');
-      }
-    } catch (error) {
-      setError('Oops... some error');
+    const data = Object.fromEntries(formData) as unknown as AuthRequest;
+    const res = await login(data);
+    if (res) {
+      setUser(res);
+      router.push('/profile');
+    } else {
+      setError('Invalid email or password');
     }
   };
   return (
