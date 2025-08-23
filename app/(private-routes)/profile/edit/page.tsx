@@ -52,7 +52,7 @@ export default function EditProfilePage() {
         <h1 className={css.formTitle}>Edit Profile</h1>
 
         <Image
-          src={userImage}
+          src={userImage || '/next.svg'}
           alt="User Avatar"
           width={120}
           height={120}
