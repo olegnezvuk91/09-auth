@@ -12,13 +12,17 @@ export default function SignUpPage() {
   const setUser = useAuthStore((state) => state.setUser);
 
   const handleSubmit = async (formData: FormData) => {
-    const data = Object.fromEntries(formData) as unknown as AuthRequest;
-    const res = await register(data);
-    if (res) {
-      setUser(res);
-      router.push('/profile');
-    } else {
-      setError('Invalid email or password');
+    try {
+      const data = Object.fromEntries(formData) as unknown as AuthRequest;
+      const res = await register(data);
+      if (res) {
+        setUser(res);
+        router.push('/profile');
+      } else {
+        setError('Invalid email or password');
+      }
+    } catch {
+      setError('Oops... some error');
     }
   };
   return (
