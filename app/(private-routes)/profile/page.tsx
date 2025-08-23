@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     title: 'User Profile',
     description:
       'View and manage your personal information, profile photo, and account settings in NoteHub.',
-    url: 'https://08-zustand-zeta-one.vercel.app',
+    url: 'https://09-auth-nine-lilac.vercel.app/profile',
     images: [
       {
         url: 'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg',
