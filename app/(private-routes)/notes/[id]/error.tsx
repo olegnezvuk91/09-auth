@@ -1,6 +1,8 @@
 'use client';
 
-import type { Props } from '@/app/notes/error';
+type Props = {
+  error: { message: string };
+};
 
 export default function Error({ error }: Props) {
   return <p>Could not fetch note details. {error.message}</p>;

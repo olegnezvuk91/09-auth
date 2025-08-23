@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers';
-import { api, nextServer } from './api';
+import { nextServer } from './api';
 import { LogInUser } from '@/types/user';
 
 export async function serverSession() {
@@ -20,7 +20,7 @@ export async function serverSession() {
 export async function getServerMe(): Promise<LogInUser> {
   try {
     const cookieStore = await cookies();
-    const res = await api.get('/users/me', {
+    const res = await nextServer.get('/users/me', {
       headers: {
         Cookie: cookieStore.toString(),
       },
