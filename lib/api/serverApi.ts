@@ -1,9 +1,10 @@
-import { cookies } from 'next/headers';
+'use server';
 import { nextServer } from './api';
 import { User } from '@/types/user';
 
 import { Note } from '@/types/note';
 import { FetchNotesRes } from './clientApi';
+import { cookies } from 'next/headers';
 
 export const serverSession = async () => {
   const cookieStore = await cookies();
