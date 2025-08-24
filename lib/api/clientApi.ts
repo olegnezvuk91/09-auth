@@ -1,7 +1,7 @@
 import type { CreateNote, Note } from '@/types/note';
 import { nextServer } from './api';
 import toast from 'react-hot-toast';
-import { AuthRequest, LogInUser, User } from '@/types/user';
+import { AuthRequest, User } from '@/types/user';
 
 export interface FetchNotesRes {
   notes: Note[];
@@ -115,7 +115,7 @@ export async function session() {
 
 export async function getMe() {
   try {
-    const response = await nextServer.get<LogInUser>('/users/me');
+    const response = await nextServer.get<User>('/users/me');
     return response.data;
   } catch {
     toast.error('Something went wrong...Try again, please');
@@ -124,7 +124,7 @@ export async function getMe() {
 
 export async function updateMe({ username }: UpdateMeRequest) {
   try {
-    const res = await nextServer.patch<LogInUser>('/users/me', { username });
+    const res = await nextServer.patch<User>('/users/me', { username });
     return res.data;
   } catch (error) {
     toast.error(error instanceof Error ? error.message : String(error));
