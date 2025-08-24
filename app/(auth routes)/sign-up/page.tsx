@@ -1,5 +1,5 @@
 'use client';
-import { register } from '@/lib/api/clientsApi';
+import { register } from '@/lib/api/clientApi';
 import css from './SignUpPage.module.css';
 import { AuthRequest } from '@/types/user';
 import { useState } from 'react';

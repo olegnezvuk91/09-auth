@@ -1,5 +1,5 @@
 import type { CreateNote, Note } from '@/types/note';
-import { nextServer } from '../api/api';
+import { nextServer } from './api';
 import toast from 'react-hot-toast';
 import { AuthRequest, LogInUser, User } from '@/types/user';
 
