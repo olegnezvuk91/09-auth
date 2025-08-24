@@ -24,8 +24,8 @@ export interface UpdateMeRequest {
 }
 
 export async function fetchNotes(
-  search: string,
   page: number,
+  search: string,
   tag: string,
 ): Promise<FetchNotesRes | undefined> {
   try {

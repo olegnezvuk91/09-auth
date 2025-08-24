@@ -3,6 +3,7 @@ import { nextServer } from './api';
 import { User } from '@/types/user';
 
 import { Note } from '@/types/note';
+import { FetchNotesRes } from './clientApi';
 
 export const serverSession = async () => {
   const cookieStore = await cookies();
@@ -33,4 +34,27 @@ export const fetchNoteById = async (id: string): Promise<Note> => {
     },
   });
   return data;
+};
+
+export const getNotesServer = async (
+  page = 1,
+
+  search = '',
+  tag = '',
+): Promise<FetchNotesRes> => {
+  const cookieStore = await cookies();
+  const perPage = 12;
+  const params: Record<string, string | number> = { page, perPage };
+
+  const headers = { Cookie: cookieStore.toString() };
+
+  if (search.trim() !== '') params.search = search.trim();
+  if (tag.trim().toLowerCase() !== 'all' && tag.trim() !== '') {
+    params.tag = tag.trim();
+  }
+  const response = await nextServer.get<FetchNotesRes>('/notes', {
+    params,
+    headers,
+  });
+  return response.data;
 };

@@ -28,8 +28,8 @@ export default function NotesClient({ tag }: NotesClientProps) {
   const [debouncedSearch] = useDebounce(search, 300);
 
   const { data, isLoading, isError, isSuccess } = useQuery({
-    queryKey: ['notes', debouncedSearch, page, tag],
-    queryFn: () => fetchNotes(debouncedSearch, page, tag ?? ''),
+    queryKey: ['notes', page, debouncedSearch, tag],
+    queryFn: () => fetchNotes(page, debouncedSearch, tag ?? ''),
     placeholderData: keepPreviousData,
   });
 
